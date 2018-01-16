@@ -23,7 +23,7 @@ public class Hash {
 
 	/**
 	 * 散列算法 
-	 * 散列表每个关键字被映射到0到TableSize-1这个范围中的某个值，这个映射叫做散列函数
+	 * 散列表每个关键字被映射到0到M-1这个范围中的某个值，这个映射叫做散列函数
 	 * MAD法:hash(key) = (a * key + b ) % M M为素数、a > 0 、b > 0、 a % m != 0
 	 */
 	public static int hash(String key, int tablesize) {
