@@ -1,4 +1,4 @@
-package compiler;
+package compiler.lexer;
 
 public class Compiler {
 	public static void main(String[] args) {
