@@ -1,6 +1,6 @@
 package thread;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolExecutorTest {
 
+	public static int count = 0;
+	
 	public static void main(String[] args) {
 
 		/**
@@ -19,13 +21,82 @@ public class ThreadPoolExecutorTest {
 		     TimeUnit unit,
 		     BlockingQueue<Runnable> workQueue
 		 * </pre>
+		 * <pre>
+		 * 1、任务执行时，先消耗corePoolSize的数量，当corePoolSize数量的线程开辟完毕
+		 * 2、将要执行的任务放入workQueue队列中
+		 * 3、如果workQueue是一个有边界的队列，workQueue放满时，
+		 * 如果corePoolSize!=maximumPoolSize && corePoolSize < maximumPoolSize,
+		 * 则继续开辟线程，当线程数量达到最大线程是，如果还有任务要执行，则拒绝处理
+		 * </pre>
 		 */
-		ThreadPoolExecutor pool = new ThreadPoolExecutor(3, 3, 0L, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>());
+		ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 4, 0L, TimeUnit.MILLISECONDS,
+				new ArrayBlockingQueue<>(2),new CustomRejectedExecutionHandler());
 
-		pool.execute(() -> {
-			System.out.println("ThreadPoolExecutor " + Thread.currentThread().getName());
+		pool.execute(()->{
+			while(true){
+				
+			}
 		});
+		pool.execute(()->{
+			System.out.println("Test");
+		});
+		
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 1 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 2 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 3 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 4 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 5 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 6 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+//		pool.execute(() -> {
+//			System.out.println("ThreadPoolExecutor 7 " + Thread.currentThread().getName());
+//			try {
+//				Thread.currentThread().sleep(30);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
 	}
 
 	/**
